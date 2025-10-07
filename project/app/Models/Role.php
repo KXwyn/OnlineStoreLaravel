@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     use HasFactory;
+
+    // Campos que se pueden asignar masivamente
+    protected $fillable = ['nombre'];
+
+    // Relación: un rol tiene muchos usuarios
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

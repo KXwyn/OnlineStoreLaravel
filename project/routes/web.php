@@ -1,18 +1,24 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AccountingController;
 
 /*
-|--------------------------------------------------------------------------
+|-----------------------------------
 | Web Routes
-|--------------------------------------------------------------------------
+|-----------------------------------
 |
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
+| Aquí van a quedar registras las rutas web de la tienda online.
 |
 */
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+// 🔹 Rutas del AccountingController
+Route::get('/login', [AccountingController::class, 'login']);
+Route::get('/logout', [AccountingController::class, 'logout']);
+Route::get('/change-password', [AccountingController::class, 'changePassword']);
+Route::get('/profile/{id}', [AccountingController::class, 'viewProfile']);
+Route::post('/update-user/{id}', [AccountingController::class, 'updateUser']);
