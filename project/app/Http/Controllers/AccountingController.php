@@ -8,7 +8,7 @@ use App\Models\User;
 class AccountingController extends Controller
 {
     /**
-     * Iniciar sesión (estructura base)
+     * Inicio de sesion (estructura base)
      */
     public function login(Request $request)
     {
