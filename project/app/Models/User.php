@@ -12,42 +12,40 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * Los atributos que se pueden asignar masivamente.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'email',
         'password',
-        'role_id', // se agrega esto para poder asignar el rol
+        // QUITAR role_id porque ahora van en tabla pivote
     ];
 
-    /**
-     * Los atributos que deben estar ocultos para la serialización.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Los atributos que deben ser convertidos a tipos nativos.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
 
     /**
-     * Relación: un usuario pertenece a un rol.
+     * Relación: un usuario puede tener varios roles.
      */
-    public function role()
+    public function roles()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsToMany(Role::class);
+    }
+
+    /**
+     * Verificar si un usuario tiene un permiso.
+     */
+    public function hasPermission($permissionName)
+    {
+        foreach ($this->roles as $role) {
+            if ($role->permissions->contains('name', $permissionName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
