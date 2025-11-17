@@ -10,11 +10,18 @@ class Role extends Model
     use HasFactory;
 
     // Campos que se pueden asignar masivamente
-    protected $fillable = ['nombre'];
+    protected $fillable = ['name'];
 
     // Relación: un rol tiene muchos usuarios
     public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsToMany(User::class);
+    }
+
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class);
     }
 }
+
+
