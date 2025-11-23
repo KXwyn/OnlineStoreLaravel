@@ -1,32 +1,53 @@
 <?php
 
-use App\Http\Controllers\BlogController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProviderController;
+use App\Http\Controllers\Admin\ProductController;
 
+/*
+|--------------------------------------------------------------------------
+| Rutas Públicas
+|--------------------------------------------------------------------------
+*/
 Route::get('/', function () {
+    // Por ahora, si un usuario está logueado, lo mandamos al dashboard.
+    // Si no, a la página de bienvenida.
+    if (auth()->check()) {
+        return redirect()->route('admin.dashboard');
+    }
     return view('welcome');
-});
+})->name('home');
 
-Route::get('/blogs', [BlogController::class, 'index'])
-    ->middleware('permission:showBlogs');
 
-Route::post('/blogs', [BlogController::class, 'store'])
-    ->middleware('permission:createBlogs');
-
-//Rutas de autenticación
-    // Mostrar el formulario de registro
+/*
+|--------------------------------------------------------------------------
+| Rutas de Autenticación
+|--------------------------------------------------------------------------
+*/
 Route::get('/register', [LoginController::class, 'showRegisterForm'])->name('register');
-// Procesar el formulario de registro
 Route::post('/register', [LoginController::class, 'register']);
-
-// Mostrar el formulario de login
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-// Procesar el formulario de login
 Route::post('/login', [LoginController::class, 'login']);
-
-// Cerrar sesión
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::resource('users', App\Http\Controllers\UserController::class);
-Route::resource('roles', App\Http\Controllers\RoleController::class);
-Route::resource('permissions', App\Http\Controllers\PermissionController::class);
+
+/*
+|--------------------------------------------------------------------------
+| Rutas del Panel de Administración
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+
+    // Ruta para el Dashboard principal del admin
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard'); // Crearemos esta vista más adelante
+    })->name('dashboard');
+
+    // Rutas de Recursos para el Catálogo
+    // Laravel creará automáticamente las 7 rutas del CRUD para cada uno.
+    Route::resource('categories', CategoryController::class);
+    Route::resource('providers', ProviderController::class);
+    Route::resource('products', ProductController::class);
+});

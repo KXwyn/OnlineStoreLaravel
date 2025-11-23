@@ -33,39 +33,127 @@
     </nav>
     <!-- /.navbar -->
 
-    <!-- Main Sidebar Container -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
-        <a href="/" class="brand-link">
-            <span class="brand-text font-weight-light">Mi Tienda Online</span>
-        </a>
-        <div class="sidebar">
-            <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <li class="nav-item">
-                        <a href="/blogs" class="nav-link active">
-                            <i class="nav-icon fas fa-blog"></i>
-                            <p>Blogs</p>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </aside>
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="{{ route('admin.dashboard') }}" class="brand-link">
+        <span class="brand-text font-weight-light">Mi Tienda Online</span>
+    </a>
 
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <div class="content-header">
-            <div class="container-fluid">
-                <h1>@yield('title')</h1>
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+        {{-- ESTE BLOQUE SOLO SE MOSTRARÁ SI EL USUARIO HA INICIADO SESIÓN --}}
+        @auth
+            <!-- Sidebar user panel (optional) -->
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="info">
+                    <a href="#" class="d-block">{{ Auth::user()->name }}</a>
+                </div>
             </div>
-        </div>
-        <div class="content">
-            <div class="container-fluid">
-                @yield('content')
-            </div>
-        </div>
+        @endauth
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+                <!-- Enlace al Dashboard -->
+                <li class="nav-item">
+                    <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+
+                <!-- Separador de menú -->
+                <li class="nav-header">CATÁLOGO</li>
+
+                <!-- Enlace a Categorías -->
+                <li class="nav-item">
+                    <a href="{{ route('admin.categories.index') }}" class="nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-tags"></i>
+                        <p>Categorías</p>
+                    </a>
+                </li>
+
+                <!-- Enlace a Proveedores -->
+                <li class="nav-item">
+                    <a href="{{ route('admin.providers.index') }}" class="nav-link {{ request()->routeIs('admin.providers.*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-truck"></i>
+                        <p>Proveedores</p>
+                    </a>
+                </li>
+
+                <!-- Enlace a Productos -->
+                <li class="nav-item">
+                    <a href="{{ route('admin.products.index') }}" class="nav-link {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-box"></i>
+                        <p>Productos</p>
+                    </a>
+                </li>
+
+            </ul>
+
+        </nav>
+        <!-- /.sidebar-menu -->
     </div>
-    <!-- /.content-wrapper -->
+    <!-- /.sidebar -->
+</aside>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    {{-- Usamos @yield('title') para poner el título principal de la página --}}
+                    <h1 class="m-0">@yield('title')</h1>
+                </div>
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+
+            {{-- Mensajes de éxito y error --}}
+
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>¡Error!</strong> Revisa los siguientes campos:
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
+            {{-- Aquí se inyectará el contenido principal de cada página (tablas, formularios, etc.) --}}
+            @yield('content')
+
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
 
 </div>
 <!-- ./wrapper -->
