@@ -28,7 +28,15 @@
                             <td>{{ $category->name }}</td>
                             <td>{{ $category->description }}</td>
                             <td>
-                                {{-- Aquí irán los botones de Editar y Eliminar --}}
+                                   {{-- Botón para ir al formulario de edición --}}
+                                <a href="{{ route('admin.categories.edit', $category->id) }}" class="btn btn-sm btn-warning">Editar</a>
+
+                                {{-- Formulario para eliminar el registro --}}
+                                <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta categoría?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                                </form>
                             </td>
                         </tr>
                     @empty
