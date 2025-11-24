@@ -33,8 +33,8 @@
                         <td>{{ $product->category->name ?? 'Sin Categoría' }}</td>
                         <td>{{ $product->provider->name ?? 'Sin Proveedor' }}</td>
                         <td>
-                            <a href="{{-- {{ route('admin.products.edit', $product->id) }} --}}" class="btn btn-sm btn-warning">Editar</a>
-                            <form action="{{-- {{ route('admin.products.destroy', $product->id) }} --}}" method="POST" class="d-inline" onsubmit="return confirm('¿Estás seguro?');">
+                            <a href="{{ route('admin.products.edit', $product->id) }} --}}" class="btn btn-sm btn-warning">Editar</a>
+                            <form action="{{ route('admin.products.destroy', $product->id) }} --}}" method="POST" class="d-inline" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este producto?');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>

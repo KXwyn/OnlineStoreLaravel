@@ -80,9 +80,13 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Product $product)
     {
-        //
+        // Necesitamos todas las categorías y proveedores para los <select>
+        $categories = Category::all();
+        $providers = Provider::all();
+
+        return view('admin.products.edit', compact('product', 'categories', 'providers'));
     }
 
     /**
@@ -92,9 +96,20 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Product $product)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'category_id' => 'required|integer|exists:categories,id',
+            'provider_id' => 'required|integer|exists:providers,id',
+        ]);
+
+        $product->update($request->all());
+
+        return redirect()->route('admin.products.index')->with('success', 'Producto actualizado exitosamente.');
     }
 
     /**
@@ -103,8 +118,9 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        //
+        $product->delete();
+        return redirect()->route('admin.products.index')->with('success', 'Producto eliminado exitosamente.');
     }
 }
