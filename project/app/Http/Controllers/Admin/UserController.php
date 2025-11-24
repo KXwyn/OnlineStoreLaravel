@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Role;
@@ -31,7 +32,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $roles = Role::all(); // Obtenemos todos los roles
+        return view('admin.users.create', compact('roles'));
     }
 
     /**
@@ -42,8 +44,26 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        // Validamos los datos, incluyendo la contraseña
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+            'roles' => 'nullable|array'
+        ]);
+
+        // Creamos el usuario
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password), // Encriptamos la contraseña
+        ]);
+
+        // Sincronizamos los roles
+        $user->roles()->sync($request->roles ?? []);
+
+        return redirect()->route('admin.users.index')->with('success', 'Usuario creado exitosamente.');
+}
 
     /**
      * Display the specified resource.
@@ -104,8 +124,19 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+         if ($user->id === 1) { // Suponiendo que el primer usuario es el superadmin
+        return redirect()->route('admin.users.index')->withErrors('No puedes eliminar al administrador principal.');
+    }
+
+    // Primero, desvinculamos todos los roles para limpiar la tabla pivote.
+    $user->roles()->sync([]);
+
+    // Luego, eliminamos al usuario.
+    $user->delete();
+
+    // Redirigimos de vuelta con un mensaje de éxito.
+    return redirect()->route('admin.users.index')->with('success', 'Usuario eliminado exitosamente.');
     }
 }

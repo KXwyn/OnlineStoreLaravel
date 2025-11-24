@@ -7,8 +7,7 @@
     <div class="card-header">
         <h3 class="card-title">Lista de Usuarios</h3>
         <div class="card-tools">
-            {{-- En el futuro, aquí irá un botón para crear usuarios --}}
-            {{-- <a href="{{ route('admin.users.create') }}" class="btn btn-primary">Añadir Usuario</a> --}}
+            <a href="{{ route('admin.users.create') }}" class="btn btn-primary">Añadir Usuario</a>
         </div>
     </div>
     <div class="card-body">
@@ -44,6 +43,11 @@
                         <td>
                             <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm btn-warning">Editar Roles</a>
                             {{-- En el futuro, aquí irá un botón para eliminar --}}
+                            <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Estás seguro de que quieres eliminar a este usuario?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                        </form>
                         </td>
                     </tr>
                 @empty

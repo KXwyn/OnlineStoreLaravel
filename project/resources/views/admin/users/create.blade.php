@@ -1,13 +1,12 @@
 @extends('layouts.admin')
-@section('title', 'Editar Usuario')
+@section('title', 'Crear Nuevo Usuario')
 
 @section('content')
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Editando al usuario: {{ $user->name }}</h3>
+        <h3 class="card-title">Formulario de Nuevo Usuario</h3>
     </div>
     <div class="card-body">
-        {{-- Mostramos errores de validación si los hay --}}
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -18,17 +17,21 @@
             </div>
         @endif
 
-        <form action="{{ route('admin.users.update', $user->id) }}" method="POST">
+        <form action="{{ route('admin.users.store') }}" method="POST">
             @csrf
-            @method('PUT') {{-- Directiva de Blade para indicar que es una petición PUT/PATCH --}}
+            {{-- No se usa @method('PUT') porque es una creación (POST) --}}
 
             <div class="form-group">
                 <label for="name">Nombre</label>
-                <input type="text" name="name" id="name" class="form-control" value="{{ old('name', $user->name) }}" required>
+                <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}" required>
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" name="email" id="email" class="form-control" value="{{ old('email', $user->email) }}" required>
+                <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" name="password" id="password" class="form-control" required>
             </div>
 
             <hr>
@@ -36,10 +39,7 @@
             <div class="form-group">
                 @foreach ($roles as $role)
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="roles[]" value="{{ $role->id }}" id="role_{{ $role->id }}"
-                            {{-- Lógica para marcar los roles que el usuario ya tiene --}}
-                            @if($user->roles->contains($role->id)) checked @endif
-                        >
+                        <input class="form-check-input" type="checkbox" name="roles[]" value="{{ $role->id }}" id="role_{{ $role->id }}">
                         <label class="form-check-label" for="role_{{ $role->id }}">
                             {{ $role->name }}
                         </label>
@@ -47,7 +47,7 @@
                 @endforeach
             </div>
 
-            <button type="submit" class="btn btn-primary">Actualizar Usuario</button>
+            <button type="submit" class="btn btn-primary">Crear Usuario</button>
             <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>
