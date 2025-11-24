@@ -37,6 +37,8 @@ class PermissionSeeder extends Seeder
             ['name' => 'manageProviders', 'description' => 'Gestionar Proveedores', 'module' => 'Catálogo'],
             // Products
             ['name' => 'manageProducts', 'description' => 'Gestionar Productos', 'module' => 'Catálogo'],
+            // Administración
+            ['name' => 'manageUsers', 'description' => 'Gestionar Usuarios', 'module' => 'Administración'],
         ];
 
         // Inserta los permisos, pero evita duplicados si el seeder se corre de nuevo

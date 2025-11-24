@@ -68,12 +68,21 @@
 
                 <!-- Separador de menú -->
                 <li class="nav-header">CATÁLOGO</li>
+                <li class="nav-header">ADMINISTRACIÓN</li>
 
                 <!-- Enlace a Categorías -->
                 <li class="nav-item">
                     <a href="{{ route('admin.categories.index') }}" class="nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tags"></i>
                         <p>Categorías</p>
+                    </a>
+                </li>
+
+                <!-- Enlace a Usuarios -->
+                <li class="nav-item">
+                    <a href="{{ route('admin.users.index') }}" class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>Usuarios</p>
                     </a>
                 </li>
 
