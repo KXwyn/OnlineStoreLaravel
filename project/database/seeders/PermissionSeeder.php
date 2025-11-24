@@ -25,17 +25,18 @@ class PermissionSeeder extends Seeder
             ['name' => 'updateSections', 'description' => 'Editar Secciones', 'module' => 'Secciones'],
             ['name' => 'deleteSections', 'description' => 'Eliminar Secciones', 'module' => 'Secciones'],
 
-            // Blogs
-            ['name' => 'showBlogs', 'description' => 'Ver Blogs', 'module' => 'Blogs'],
-            ['name' => 'createBlogs', 'description' => 'Crear Blogs', 'module' => 'Blogs'],
-            ['name' => 'updateBlogs', 'description' => 'Editar Blogs', 'module' => 'Blogs'],
-            ['name' => 'deleteBlogs', 'description' => 'Eliminar Blogs', 'module' => 'Blogs'],
-
             // Users
             ['name' => 'showUsers', 'description' => 'Ver Usuarios', 'module' => 'Usuarios'],
             ['name' => 'createUsers', 'description' => 'Crear Usuarios', 'module' => 'Usuarios'],
             ['name' => 'updateUsers', 'description' => 'Editar Usuarios', 'module' => 'Usuarios'],
             ['name' => 'deleteUsers', 'description' => 'Eliminar Usuarios', 'module' => 'Usuarios'],
+
+            // Categories
+            ['name' => 'manageCategories', 'description' => 'Gestionar Categorías', 'module' => 'Catálogo'],
+            // Providers
+            ['name' => 'manageProviders', 'description' => 'Gestionar Proveedores', 'module' => 'Catálogo'],
+            // Products
+            ['name' => 'manageProducts', 'description' => 'Gestionar Productos', 'module' => 'Catálogo'],
         ];
 
         // Inserta los permisos, pero evita duplicados si el seeder se corre de nuevo

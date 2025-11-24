@@ -46,7 +46,10 @@ class CategoryController extends Controller
         ]);
 
         // 2. Crear la categoría
-        Category::create($request->all());
+        Category::create([
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
 
         // 3. Redirigir con un mensaje de éxito
         return redirect()->route('admin.categories.index')->with('success', 'Categoría creada exitosamente.');
